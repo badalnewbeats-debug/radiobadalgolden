@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Badal Golden — Har Pal Sadabahaar</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Radio Badal Golden","short_name":"Badal Golden","start_url":".","display":"standalone","background_color":"%23121212","theme_color":"%23ffd700","icons":[{"src":"https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png","sizes":"512x512","type":"image/png"}]}'>
+    <meta name="theme-color" content="#121212">
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #ffd700;
+            --glass-bg: rgba(20, 20, 20, 0.85);
+            --border-color: rgba(255, 215, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 150px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            z-index: 1;
+        }
+
+        #rain-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 3;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .top-badge, .top-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2ecc71;
+        }
+
+        .showcase-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            margin-bottom: 15px;
+        }
+
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 10px auto;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--primary-gold);
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: rotateLogo 12s linear infinite;
+        }
+
+        @keyframes rotateLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 {
+            color: var(--primary-gold);
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            color: #ddd;
+            font-style: italic;
+            margin-top: 2px;
+            margin-bottom: 10px;
+        }
+
+        .mid-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .action-pill {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 8px 5px;
+            border-radius: 35px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.72rem;
+            text-align: center;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .action-pill i {
+            color: var(--primary-gold);
+        }
+
+        .action-pill:hover {
+            border-color: var(--primary-gold);
+            background: rgba(255, 215, 0, 0.15);
+        }
+
+        /* 80s Retro Vintage Cassette & Village Vibes */
+        .retro-vibe-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+
+        .retro-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--primary-gold);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .retro-subtitle {
+            font-size: 0.7rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .cassette-deck {
+            background: linear-gradient(135deg, #2b2b2b, #111);
+            border: 2px solid var(--primary-gold);
+            border-radius: 14px;
+            padding: 12px;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.5);
+            max-width: 320px;
+            margin: 0 auto 15px auto;
+        }
+
+        .cassette-label {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .spools-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #000;
+            border: 1px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .spool {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #777;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            position: relative;
+            animation: spinSpool 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .cassette-deck.playing .spool {
+            animation-play-state: running;
+        }
+
+        @keyframes spinSpool {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spool-center {
+            width: 18px;
+            height: 18px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--primary-gold);
+        }
+
+        .spool-teeth {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px dotted #fff;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .vintage-tag-line {
+            font-size: 0.72rem;
+            color: #eee;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .equalizer-box {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 35px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        .eq-bar {
+            width: 5px;
+            background: var(--primary-gold);
+            border-radius: 3px;
+            height: 6px;
+            transition: height 0.2s ease;
+        }
+
+        .cassette-deck.playing .eq-bar {
+            animation: bounceBar 0.8s ease-in-out infinite alternate;
+        }
+
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(6) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(7) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(8) { animation-delay: 0.3s; }
+
+        @keyframes bounceBar {
+            0% { height: 6px; }
+            100% { height: 28px; background: #ff4d4d; }
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .social-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .social-card i {
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+        }
+
+        .social-card:hover {
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+
+        .bottom-player {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 480px;
+            background: rgba(18, 18, 18, 0.94);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--border-color);
+            border-radius: 30px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .player-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-gold);
+            object-fit: cover;
+        }
+
+        .player-info img.rotating {
+            animation: rotateLogo 4s linear infinite;
+        }
+
+        .track-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            width: 130px;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .track-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #fff;
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+        }
+
+        .track-title.paused {
+            animation-play-state: paused;
+            padding-left: 0;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .track-artist {
+            font-size: 0.62rem;
+            color: var(--primary-gold);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .player-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .ctrl-btn:hover {
+            color: var(--primary-gold);
+        }
+
+        .main-play-btn {
+            background: var(--primary-gold);
+            color: #000;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        #hidden-youtube-container {
+            display: none;
+        }
+
+        #floating-mini-player {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            width: 170px;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--primary-gold);
+            border-radius: 14px;
+            padding: 8px 10px;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.9);
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+
+        #floating-mini-player.active-popup {
+            display: flex;
+        }
+
+        #floating-mini-player img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--primary-gold);
+            object-fit: cover;
+        }
+
+        .float-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .float-title {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .float-status {
+            font-size: 0.55rem;
+            color: var(--primary-gold);
+        }
+
+        .float-play-btn {
+            background: var(--primary-gold);
+            color: #000;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #chat-modal {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            width: 95%;
+            max-width: 480px;
+            height: 420px;
+            background: rgba(18, 18, 18, 0.96);
+            backdrop-filter: blur(20px);
+            border-top: 2px solid var(--primary-gold);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-radius: 20px 20px 0 0;
+            z-index: 2500;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
+        }
+
+        #chat-modal.open {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #name-prompt {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            z-index: 10;
+            text-align: center;
+        }
+
+        #name-prompt h3 {
+            color: var(--primary-gold);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        #name-prompt input {
+            width: 80%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        #name-prompt button {
+            background: var(--primary-gold);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #000;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pinned-msg {
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid var(--primary-gold);
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            line-height: 1.4;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .pinned-msg b {
+            color: var(--primary-gold);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.75rem;
+            padding-right: 5px;
+        }
+
+        .chat-msg {
+            background: rgba(255,255,255,0.07);
+            padding: 6px 10px;
+            border-radius: 10px;
+            max-width: 85%;
+        }
+
+        .chat-msg span {
+            color: var(--primary-gold);
+            font-weight: 600;
+            display: block;
+            font-size: 0.68rem;
+        }
+
+        .chat-footer {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 0.75rem;
+            outline: none;
+        }
+
+        .chat-footer button {
+            background: var(--primary-gold);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+    <canvas id="rain-canvas"></canvas>
+
+    <!-- Background Audio Elements -->
+    <audio id="rain-audio" src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg" loop preload="none"></audio>
+    <!-- Station Intro Audio (10 Seconds) -->
+    <audio id="intro-audio" src="1002987545.mp4" preload="auto"></audio>
+
+    <!-- Draggable Floating Mini Player Pop-up -->
+    <div id="floating-mini-player">
+        <img id="float-cover-img" src="https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png" alt="Cover">
+        <div class="float-info">
+            <span class="float-title" id="float-title">Radio Badal</span>
+            <span class="float-status" id="float-status">Playing</span>
+        </div>
+        <button class="float-play-btn" id="float-play-btn" onclick="togglePlay()"><i class="fa-solid fa-pause" id="float-play-icon"></i></button>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="top-bar">
+            <div class="top-badge">
+                <div class="online-dot"></div> <span id="listener-count">1420</span> online
+            </div>
+            <div class="top-badge" style="color: var(--primary-gold);">
+                <i class="fa-regular fa-clock"></i> <span id="real-time-clock">00:00 AM</span>
+            </div>
+            <a href="mailto:radiobadal22@gmail.com" class="top-btn">
+                <i class="fa-solid fa-envelope"></i> Contact
+            </a>
+        </div>
+
+        <div class="showcase-box">
+            <div class="logo-container">
+                <img src="https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png" alt="Logo">
+            </div>
+            <h1>Radio Badal Golden</h1>
+            <div class="tagline">Har Pal Sadabahaar (80s Retro Vintage Vibe)</div>
+            <p style="font-size: 0.78rem; color: #ccc; text-align: justify; line-height: 1.4;">
+                Radio Badal Golden is your ultimate 80s digital streaming channel. Enjoy seamless background playback with system notification controls!
+            </p>
+        </div>
+
+        <div class="mid-actions">
+            <!-- Station Intro Toggle Button (Like Rain) -->
+            <button onclick="toggleIntroEffect()" class="action-pill" style="border:1px solid var(--primary-gold);">
+                <i class="fa-solid fa-microphone-lines"></i> <span id="intro-btn-text">Station Intro</span>
+            </button>
+            <button onclick="toggleRainEffect()" class="action-pill" style="border:none;">
+                <i class="fa-solid fa-cloud-rain"></i> <span id="rain-btn-text">Baarish?</span>
+            </button>
+            <button onclick="toggleChat()" class="action-pill" style="border:none;">
+                <i class="fa-solid fa-comments"></i> Live Chat
+            </button>
+            <button onclick="toggleRecording()" class="action-pill" id="rec-pill-btn" style="border:none;">
+                <i class="fa-solid fa-circle-dot" id="rec-icon"></i> <span id="rec-text">Record</span>
+            </button>
+            <button onclick="toggleSleepTimer()" class="action-pill" style="border:none;">
+                <i class="fa-solid fa-moon"></i> <span id="timer-display">Timer</span>
+            </button>
+            <a href="https://whatsapp.com/channel/0029Va5OtIW3LdQP9HNmDp2E" target="_blank" class="action-pill">
+                <i class="fa-brands fa-whatsapp"></i> Channel
+            </a>
+        </div>
+
+        <!-- 📼 80s Retro Vintage Cassette & Village Vibes -->
+        <div class="retro-vibe-section">
+            <div class="retro-header">
+                <i class="fa-solid fa-compact-disc"></i> 80s Retro Vintage Vibe
+            </div>
+            <div class="retro-subtitle">Purane Sunehre Nagme — Cassette & Vinyl Era Experience</div>
+            
+            <div class="cassette-deck" id="cassette-deck">
+                <div class="cassette-label">STEREO CASSETTE PLAYER</div>
+                <div class="spools-container">
+                    <div class="spool">
+                        <div class="spool-teeth"></div>
+                        <div class="spool-center"></div>
+                    </div>
+                    <div style="color: var(--primary-gold); font-size: 0.7rem; font-weight: bold;">● REC / PLAY</div>
+                    <div class="spool">
+                        <div class="spool-teeth"></div>
+                        <div class="spool-center"></div>
+                    </div>
+                </div>
+                <div class="vintage-tag-line">"Jahan Sur Hai, Wahan Sukoon Hai"</div>
+            </div>
+
+            <!-- Animated Equalizer Bars -->
+            <div class="equalizer-box">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+            </div>
+        </div>
+
+        <div class="social-grid">
+            <a href="https://wa.me/917079979004" target="_blank" class="social-card">
+                <i class="fa-brands fa-whatsapp"></i>
+                <div>
+                    <div style="font-weight:600;">WhatsApp</div>
+                    <div style="font-size:0.65rem; color:#aaa;">7079979004</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/share/1ACkTD9AdQ/" target="_blank" class="social-card">
+                <i class="fa-brands fa-facebook"></i>
+                <div>
+                    <div style="font-weight:600;">Facebook</div>
+                    <div style="font-size:0.65rem; color:#aaa;">Connect with us</div>
+                </div>
+            </a>
+            <a href="https://www.instagram.com/radiobadal?igsh=ZzVsbGFlMTl2ODlq" target="_blank" class="social-card">
+                <i class="fa-brands fa-instagram"></i>
+                <div>
+                    <div style="font-weight:600;">Instagram</div>
+                    <div style="font-size:0.65rem; color:#aaa;">@radiobadal</div>
+                </div>
+            </a>
+            <a href="https://youtube.com/@radiobadaldigital?si=z8414SP0N1IY7Dw9" target="_blank" class="social-card">
+                <i class="fa-brands fa-youtube"></i>
+                <div>
+                    <div style="font-weight:600;">YouTube</div>
+                    <div style="font-size:0.65rem; color:#aaa;">Digital Channel</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div id="hidden-youtube-container">
+        <div id="youtube-player"></div>
+    </div>
+
+    <div class="bottom-player">
+        <div class="player-info">
+            <img id="cover-img" src="https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png" alt="Song Cover">
+            <div class="track-details">
+                <div class="marquee-container">
+                    <span class="track-title paused" id="track-name">Radio Badal Golden - Click Play</span>
+                </div>
+                <div class="track-artist">
+                    <span id="artist-name">Radio Badal</span>
+                    <span id="time-counter">0:00 / 0:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="player-buttons">
+            <button class="ctrl-btn" onclick="playPrevious()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+            <button class="main-play-btn" id="play-pause-btn" onclick="togglePlay()">
+                <i class="fa-solid fa-play" id="play-icon"></i>
+            </button>
+            <button class="ctrl-btn" onclick="playNext()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+    </div>
+
+    <div id="chat-modal">
+        <div id="name-prompt">
+            <h3>💬 Live Chat me judne ke liye apna Naam likhein:</h3>
+            <input type="text" id="username-input" placeholder="Apna naam yahan type karein..." />
+            <button onclick="saveUsername()">Join Chat</button>
+        </div>
+
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Radio Live Chat (<span id="display-username">User</span>)</span>
+            <button onclick="toggleChat()" style="background:none; border:none; color:#fff; font-size:1rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="pinned-msg">
+            <b>📌 PINNED MESSAGE:</b>
+            🎙️ Host: RadioFan Pankaj<br>
+            📻 Radio Badal Digital Radio Station<br>
+            🎶 Google Play Store से Radio Badal App डाउनलोड करें और सुनिए Hindi 80s और Golden Era का nonstop musical experience!<br>
+            🎧 Radio Badal — आपकी पसंद, आपकी धुन, आपका रेडियो।
+        </div>
+
+        <div class="chat-body" id="chat-box">
+            <div class="chat-msg"><span>Amit (Delhi)</span>Kya baat hai! 80s ki yaad dila di.</div>
+            <div class="chat-msg"><span>Pooja Sharma</span>Radio Badal Golden is best! ❤️</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Apna message likhein..." />
+            <button onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        const defaultLogoUrl = "https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png";
+        const cassetteDeck = document.getElementById('cassette-deck');
+
+        // --- Station Intro Audio Logic (Direct play, auto stop after 10s like rain) ---
+        const introAudio = document.getElementById('intro-audio');
+        let introTimeout = null;
+
+        function toggleIntroEffect() {
+            const btnText = document.getElementById('intro-btn-text');
+            if (introAudio.paused) {
+                introAudio.currentTime = 0;
+                introAudio.play().then(() => {
+                    btnText.innerText = "Playing Intro...";
+                    // Auto stop after exactly 10 seconds
+                    clearTimeout(introTimeout);
+                    introTimeout = setTimeout(() => {
+                        introAudio.pause();
+                        btnText.innerText = "Station Intro";
+                    }, 10000);
+                }).catch(e => {
+                    alert("Intro play nahi ho saka.");
+                });
+            } else {
+                introAudio.pause();
+                introAudio.currentTime = 0;
+                clearTimeout(introTimeout);
+                btnText.innerText = "Station Intro";
+            }
+        }
+
+        const floatingPlayer = document.getElementById('floating-mini-player');
+        let isDragging = false, startX, startY, initialX, initialY;
+
+        floatingPlayer.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            let rect = floatingPlayer.getBoundingClientRect();
+            initialX = rect.left;
+            initialY = rect.top;
+            floatingPlayer.setPointerCapture(e.pointerId);
+        });
+
+        floatingPlayer.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            let dx = e.clientX - startX;
+            let dy = e.clientY - startY;
+            floatingPlayer.style.left = (initialX + dx) + 'px';
+            floatingPlayer.style.top = (initialY + dy) + 'px';
+            floatingPlayer.style.right = 'auto';
+        });
+
+        floatingPlayer.addEventListener('pointerup', (e) => {
+            isDragging = false;
+            floatingPlayer.releasePointerCapture(e.pointerId);
+        });
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && isPlaying) {
+                floatingPlayer.classList.add('active-popup');
+            } else {
+                floatingPlayer.classList.remove('active-popup');
+            }
+        });
+
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('real-time-clock').innerText = `${hours}:${minutes} ${ampm}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- Listener Count Logic (300 to 2300 range, real-time +1 on play / -1 on pause) ---
+        let currentListeners = Math.floor(Math.random() * (1500 - 800 + 1)) + 800;
+        const listenerEl = document.getElementById('listener-count');
+        listenerEl.innerText = currentListeners;
+
+        setInterval(() => {
+            let change = Math.floor(Math.random() * 3) - 1;
+            currentListeners += change;
+            if (currentListeners < 300) currentListeners = 300;
+            if (currentListeners > 2300) currentListeners = 2300;
+            listenerEl.innerText = currentListeners;
+        }, 6000);
+
+        // --- Canvas Rain Effect ---
+        const canvas = document.getElementById('rain-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        let rainActive = false;
+        const rainAudio = document.getElementById('rain-audio');
+        rainAudio.volume = 0.3;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const raindrops = [];
+        for (let i = 0; i < 50; i++) {
+            raindrops.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: Math.random() * 15 + 10,
+                speed: Math.random() * 5 + 3,
+                opacity: Math.random() * 0.4 + 0.1
+            });
+        }
+
+        function drawRain() {
+            if (!rainActive) {
+                ctx.clearRect(0, 0, width, height);
+                requestAnimationFrame(drawRain);
+                return;
+            }
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.25)';
+            ctx.lineWidth = 1.1;
+
+            for (let drop of raindrops) {
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x, drop.y + drop.length);
+                ctx.stroke();
+                drop.y += drop.speed;
+                if (drop.y > height) {
+                    drop.y = -20;
+                    drop.x = Math.random() * width;
+                }
+            }
+            requestAnimationFrame(drawRain);
+        }
+        drawRain();
+
+        function toggleRainEffect() {
+            rainActive = !rainActive;
+            const btnText = document.getElementById('rain-btn-text');
+            if (rainActive) {
+                btnText.innerText = "Baarish: ON";
+                rainAudio.play().catch(e => {});
+            } else {
+                btnText.innerText = "Baarish?";
+                rainAudio.pause();
+            }
+        }
+
+        let timerTimeout = null, timerState = 0;
+        function toggleSleepTimer() {
+            const display = document.getElementById('timer-display');
+            if (timerState === 0) {
+                timerState = 1; display.innerText = "15m"; setSleepTimer(15 * 60 * 1000);
+            } else if (timerState === 1) {
+                timerState = 2; display.innerText = "30m"; setSleepTimer(30 * 60 * 1000);
+            } else if (timerState === 2) {
+                timerState = 3; display.innerText = "60m"; setSleepTimer(60 * 60 * 1000);
+            } else {
+                timerState = 0; display.innerText = "Timer"; clearTimeout(timerTimeout);
+            }
+        }
+
+        function setSleepTimer(ms) {
+            clearTimeout(timerTimeout);
+            timerTimeout = setTimeout(() => {
+                if (isPlaying && player) player.pauseVideo();
+                timerState = 0;
+                document.getElementById('timer-display').innerText = "Timer";
+            }, ms);
+        }
+
+        let isRecording = false;
+        function toggleRecording() {
+            isRecording = !isRecording;
+            const recIcon = document.getElementById('rec-icon');
+            const recText = document.getElementById('rec-text');
+            if (isRecording) {
+                recIcon.style.color = "red"; recText.innerText = "Rec...";
+            } else {
+                recIcon.style.color = "var(--primary-gold)"; recText.innerText = "Record";
+            }
+        }
+
+        // --- Live Chat & Simulated Real-Time Messages ---
+        let chatUsername = "";
+        function toggleChat() {
+            const modal = document.getElementById('chat-modal');
+            modal.classList.toggle('open');
+            if (modal.classList.contains('open') && !chatUsername) {
+                document.getElementById('username-input').focus();
+            }
+        }
+
+        function saveUsername() {
+            const name = document.getElementById('username-input').value.trim();
+            if (name) {
+                chatUsername = name;
+                document.getElementById('display-username').innerText = chatUsername;
+                document.getElementById('name-prompt').style.display = 'none';
+            }
+        }
+
+        function sendChatMessage() {
+            if (!chatUsername) {
+                alert("Pehle apna naam likhein!");
+                const modal = document.getElementById('chat-modal');
+                modal.classList.add('open');
+                document.getElementById('username-input').focus();
+                return;
+            }
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (text) {
+                appendMessage(chatUsername, text);
+                input.value = '';
+            }
+        }
+
+        function appendMessage(sender, text) {
+            const chatBox = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = 'chat-msg';
+            div.innerHTML = `<span>${sender}</span>${text}`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        const simulatedUsers = [
+            { name: "Rohit (Mumbai)", text: "Kya shandar purane geet baj rahe hain!" },
+            { name: "Sneha Mishra", text: "Radio Badal Golden is my daily companion ❤️" },
+            { name: "Vikram Singh", text: "80s ki yaad taza ho gayi!" },
+            { name: "Anjali Gupta", text: "Very soothing melodies today." },
+            { name: "Manoj Kumar", text: "Superb sound quality and vibe!" }
+        ];
+
+        setInterval(() => {
+            const randomUser = simulatedUsers[Math.floor(Math.random() * simulatedUsers.length)];
+            appendMessage(randomUser.name, randomUser.text);
+        }, 12000);
+
+        // --- YouTube Player & Auto Intro Counter Logic (Every 2 songs played) ---
+        let player;
+        let isPlaying = false;
+        let timeInterval = null;
+        let songsPlayedCount = 0; // Track songs count for intro trigger
+
+        const playIcon = document.getElementById('play-icon');
+        const floatPlayIcon = document.getElementById('float-play-icon');
+        const trackNameEl = document.getElementById('track-name');
+        const floatTitleEl = document.getElementById('float-title');
+        const floatStatusEl = document.getElementById('float-status');
+        const artistNameEl = document.getElementById('artist-name');
+        const timeCounterEl = document.getElementById('time-counter');
+        const coverImg = document.getElementById('cover-img');
+        const floatCoverImg = document.getElementById('float-cover-img');
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                playerVars: {
+                    'listType': 'playlist',
+                    'list': 'PLJwVlwuERlTI',
+                    'autoplay': 0,
+                    'controls': 0,
+                    'suggestedQuality': 'small'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function formatTime(seconds) {
+            let m = Math.floor(seconds / 60);
+            let s = Math.floor(seconds % 60);
+            return m + ":" + (s < 10 ? "0" : "") + s;
+        }
+
+        function startTimeTracker() {
+            clearInterval(timeInterval);
+            timeInterval = setInterval(() => {
+                if (player && player.getCurrentTime && player.getDuration) {
+                    timeCounterEl.innerText = formatTime(player.getCurrentTime()) + " / " + formatTime(player.getDuration());
+                }
+            }, 1000);
+        }
+
+        function updateMediaSessionMetadata(title, artist) {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: title || "Radio Badal Golden",
+                    artist: artist || "Radio Badal (80s Era)",
+                    album: "Radio Badal Golden Stream",
+                    artwork: [
+                        { src: defaultLogoUrl, sizes: '96x96', type: 'image/png' },
+                        { src: defaultLogoUrl, sizes: '128x128', type: 'image/png' },
+                        { src: defaultLogoUrl, sizes: '192x192', type: 'image/png' },
+                        { src: defaultLogoUrl, sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+
+                navigator.mediaSession.setActionHandler('play', function() {
+                    if (player) player.playVideo();
+                });
+                navigator.mediaSession.setActionHandler('pause', function() {
+                    if (player) player.pauseVideo();
+                });
+                navigator.mediaSession.setActionHandler('previoustrack', function() {
+                    playPrevious();
+                });
+                navigator.mediaSession.setActionHandler('nexttrack', function() {
+                    playNext();
+                });
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.BUFFERING) {
+                floatStatusEl.innerText = "Loading...";
+            } else if (event.data == YT.PlayerState.PLAYING) {
+                playIcon.className = "fa-solid fa-pause";
+                floatPlayIcon.className = "fa-solid fa-pause";
+                isPlaying = true;
+                coverImg.classList.add('rotating');
+                floatCoverImg.classList.add('rotating');
+                trackNameEl.classList.remove('paused');
+                floatStatusEl.innerText = "Live Stream";
+                cassetteDeck.classList.add('playing');
+                startTimeTracker();
+
+                currentListeners += 1;
+                if (currentListeners > 2300) currentListeners = 2300;
+                listenerEl.innerText = currentListeners;
+
+                coverImg.src = defaultLogoUrl;
+                floatCoverImg.src = defaultLogoUrl;
+
+                let currentTitle = "Radio Badal Golden";
+                let currentArtist = "80s Retro Vintage Vibe";
+                try {
+                    let videoData = player.getVideoData();
+                    if (videoData && videoData.title) {
+                        currentTitle = videoData.title;
+                        trackNameEl.innerText = currentTitle;
+                        floatTitleEl.innerText = currentTitle;
+                        if (videoData.author) currentArtist = videoData.author;
+                    }
+                } catch(e) {}
+
+                updateMediaSessionMetadata(currentTitle, currentArtist);
+
+            } else if (event.data == YT.PlayerState.ENDED) {
+                // Track completed songs count, play intro automatically every 2 songs
+                songsPlayedCount++;
+                if (songsPlayedCount >= 2) {
+                    songsPlayedCount = 0;
+                    // Play Intro automatically for 10 seconds
+                    if (introAudio.paused) {
+                        introAudio.currentTime = 0;
+                        introAudio.play().catch(e => {});
+                        setTimeout(() => {
+                            introAudio.pause();
+                            introAudio.currentTime = 0;
+                        }, 10000);
+                    }
+                }
+            } else if (event.data == YT.PlayerState.PAUSED) {
+                playIcon.className = "fa-solid fa-play";
+                floatPlayIcon.className = "fa-solid fa-play";
+                isPlaying = false;
+                coverImg.classList.remove('rotating');
+                floatCoverImg.classList.remove('rotating');
+                trackNameEl.classList.add('paused');
+                floatStatusEl.innerText = "Paused";
+                cassetteDeck.classList.remove('playing');
+                clearInterval(timeInterval);
+
+                currentListeners -= 1;
+                if (currentListeners < 300) currentListeners = 300;
+                listenerEl.innerText = currentListeners;
+
+                trackNameEl.innerText = "Paused";
+                floatTitleEl.innerText = "Radio Badal";
+            }
+        }
+
+        function togglePlay() {
+            if (!player) return;
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                floatStatusEl.innerText = "Starting...";
+                player.playVideo();
+            }
+        }
+
+        function playNext() { if (player && player.nextVideo) player.nextVideo(); }
+        function playPrevious() { if (player && player.previousVideo) player.previousVideo(); }
+    </script>
+</body>
+</html>
