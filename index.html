@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Badal Golden - App UI</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-app: #080b0f;
+            --surface-card: rgba(18, 25, 35, 0.85);
+            --border-glass: rgba(212, 175, 55, 0.25);
+            --gold-primary: #d4af37;
+            --gold-light: #fbeea4;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --text-main: #ffffff;
+            --text-sub: #9ba8b6;
+            --accent-green: #00ff66;
+            --accent-red: #ff3b30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-app);
+            background-image: 
+                radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 50% 90%, rgba(10, 20, 35, 0.9) 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* App Frame Container (Like a real mobile app container on web) */
+        .app-shell {
+            width: 100%;
+            max-width: 410px;
+            background: var(--surface-card);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glass);
+            border-radius: 36px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(212,175,55,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* App Header Status Bar */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            padding-bottom: 12px;
+        }
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: var(--accent-green);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: appPulse 1.5s infinite;
+        }
+
+        @keyframes appPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .time-pill {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-glass);
+            color: var(--gold-primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* Rotating Vinyl Turntable with Professional Logo */
+        .turntable-container {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            margin: 5px auto;
+        }
+
+        .vinyl-disk {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            background: #111;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.9);
+            background-image: repeating-radial-gradient(#1c1c1c, #1c1c1c 4px, #080808 5px, #1c1c1c 6px);
+            border: 3px solid #333;
+            animation: spinDisk 8s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .pro-logo-art {
+            position: absolute;
+            width: 68px;
+            height: 68px;
+            top: 51px;
+            left: 51px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+            z-index: 2;
+            background: #000;
+        }
+
+        @keyframes spinDisk {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .app-shell.playing .vinyl-disk {
+            animation-play-state: running;
+        }
+
+        /* Station Title Details */
+        .station-details {
+            text-align: center;
+        }
+
+        .station-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .station-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        /* Sound Equalizer Waves */
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            height: 16px;
+        }
+
+        .eq-bar {
+            width: 3px;
+            height: 5px;
+            background: var(--gold-primary);
+            border-radius: 3px;
+        }
+
+        .app-shell.playing .eq-bar {
+            animation: waveBounce 0.7s infinite ease-in-out alternate;
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.2s; }
+
+        @keyframes waveBounce {
+            0% { height: 5px; }
+            100% { height: 18px; }
+        }
+
+        /* Play Button Control Row */
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .play-action-btn {
+            width: 62px;
+            height: 62px;
+            background: linear-gradient(135deg, var(--gold-primary), #997a15);
+            border: none;
+            border-radius: 50%;
+            color: var(--bg-app);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 25px var(--gold-glow);
+            transition: all 0.2s ease;
+        }
+
+        .play-action-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 35px var(--gold-primary);
+        }
+
+        /* Volume Slider Bar */
+        .volume-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .volume-container i {
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+        }
+
+        .volume-container input {
+            flex: 1;
+            max-width: 180px;
+            accent-color: var(--gold-primary);
+            cursor: pointer;
+        }
+
+        /* About Us & Special Show Editorial Box */
+        .editorial-box {
+            background: rgba(10, 15, 22, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 12px 14px;
+        }
+
+        .editorial-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .editorial-text {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .show-info {
+            margin-top: 6px;
+            font-size: 0.73rem;
+            color: var(--text-main);
+            background: rgba(212, 175, 55, 0.06);
+            border-left: 2px solid var(--gold-primary);
+            padding: 6px 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Social App Grid Links */
+        .social-app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .app-link-btn {
+            background: rgba(25, 35, 50, 0.7);
+            border: 1px solid var(--border-glass);
+            padding: 10px 6px;
+            border-radius: 14px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .app-link-btn i {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+        }
+
+        .app-link-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            color: var(--text-sub);
+            font-size: 0.65rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Professional WebApp Shell Container -->
+    <div class="app-shell" id="appShell">
+        
+        <!-- Header Status Bar -->
+        <header class="app-header">
+            <div class="live-status">
+                <div class="pulse-dot"></div> ON AIR • 24x7
+            </div>
+            <div class="time-pill" id="istClock">--:--</div>
+        </header>
+
+        <!-- Hidden Audio Stream -->
+        <audio id="audioStream" src="https://sp14.instainternet.com/8242/stream" preload="none"></audio>
+
+        <!-- Turntable Player with Professional Logo -->
+        <div class="turntable-container">
+            <div class="vinyl-disk"></div>
+            <img src="https://i.ibb.co/dJtFxdCM/file-000000006328820884397960d30aba26.png" alt="Radio Badal Logo" class="pro-logo-art">
+        </div>
+
+        <!-- Station Info -->
+        <div class="station-details">
+            <h2 class="station-title">Radio Badal Golden</h2>
+            <p class="station-subtitle">Har Pal Sadabahaar (1950 - 1988)</p>
+        </div>
+
+        <!-- Equalizer Sound Wave -->
+        <div class="equalizer">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+        </div>
+
+        <!-- Play / Pause Action Button -->
+        <div class="control-panel">
+            <button class="play-action-btn" id="playToggleBtn" onclick="togglePlayState()">
+                <i class="fa-solid fa-play" id="playPauseIcon"></i>
+            </button>
+        </div>
+
+        <!-- Volume Control Slider -->
+        <div class="volume-container">
+            <i class="fa-solid fa-volume-low"></i>
+            <input type="range" id="volSlider" min="0" max="1" step="0.05" value="1" oninput="setAudioVolume(this.value)">
+            <i class="fa-solid fa-volume-high"></i>
+        </div>
+
+        <!-- About Us & Editorial Box -->
+        <div class="editorial-box">
+            <div class="editorial-title"><i class="fa-solid fa-radio"></i> About Station</div>
+            <div class="editorial-text">
+                Bringing you timeless Hindi songs, evergreen melodies, and musical memories 24×7. 🎶❤️
+                <div class="show-info">
+                    🎙️ <strong>Golden Badal Show:</strong> Every Friday (6 PM - 9 PM)<br>
+                    🎤 Host: <strong>Radio Fan Pankaj</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media App Grid Links -->
+        <div class="social-app-grid">
+            <a href="https://whatsapp.com/channel/0029Va5OtIW3LdQP9HNmDp2E" target="_blank" class="app-link-btn">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://wa.me/917079979004" target="_blank" class="app-link-btn">
+                <i class="fa-solid fa-phone-volume"></i> Contact
+            </a>
+            <a href="https://www.facebook.com/share/1ACkTD9AdQ/" target="_blank" class="app-link-btn">
+                <i class="fa-brands fa-facebook"></i> Facebook
+            </a>
+            <a href="https://www.instagram.com/radiobadal?igsh=ZzVsbGFlMTl2ODlq" target="_blank" class="app-link-btn">
+                <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
+            <a href="https://youtube.com/@radiobadaldigital?si=z8414SP0N1IY7Dw9" target="_blank" class="app-link-btn">
+                <i class="fa-brands fa-youtube"></i> YouTube
+            </a>
+            <a href="mailto:radiobadal22@gmail.com" class="app-link-btn">
+                <i class="fa-solid fa-envelope"></i> Email Us
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Radio Badal Golden. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript App Controls -->
+    <script>
+        const audioStream = document.getElementById('audioStream');
+        const appShell = document.getElementById('appShell');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+
+        function togglePlayState() {
+            if (audioStream.paused) {
+                audioStream.play().then(() => {
+                    playPauseIcon.className = "fa-solid fa-pause";
+                    appShell.classList.add('playing');
+                }).catch(err => {
+                    alert("Stream playback error. Please try again.");
+                });
+            } else {
+                audioStream.pause();
+                playPauseIcon.className = "fa-solid fa-play";
+                appShell.classList.remove('playing');
+            }
+        }
+
+        function setAudioVolume(value) {
+            audioStream.volume = value;
+        }
+
+        // Live Indian Standard Time (IST) Clock
+        function updateISTClock() {
+            const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true };
+            const timeString = new Intl.DateTimeFormat([], options).format(new Date());
+            document.getElementById('istClock').innerText = timeString;
+        }
+        setInterval(updateISTClock, 1000);
+        updateISTClock();
+    </script>
+</body>
+</html>
